@@ -40,8 +40,8 @@ export class Migrator extends Umzug implements Generator {
    */
   constructor(options: MigratorOptions = {}) {
     let { dynamodb, tableName, attributeName, migrationsPath } = options;
-
-    dynamodb = dynamodb || new DocumentClient(pick(['region', 'accessKeyId', 'secretAccessKey', 'endpointUrl'], options));
+    const { endpointUrl, ...dyanamoDbConfig } = pick(['region', 'accessKeyId', 'secretAccessKey', 'endpointUrl'], options);
+    dynamodb = dynamodb || new DocumentClient({...dyanamoDbConfig, endpoint: endpointUrl});
     tableName = tableName || 'migrations';
     attributeName = attributeName || 'name';
     migrationsPath = migrationsPath || 'migrations';
